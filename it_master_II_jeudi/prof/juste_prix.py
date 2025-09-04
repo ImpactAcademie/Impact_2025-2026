@@ -1,15 +1,18 @@
 from random import randint
 
 
-nombre_a_deviner = randint(1, 100)
+juste_prix = randint(1, 1000)
+essai = 0
 
 while True:
-    nombre_essai = int(input("Devine un nombre entre 1 et 100: "))
-    
-    if nombre_essai < nombre_a_deviner:
-        print("Plus grand")
-    elif nombre_essai > nombre_a_deviner:
+    prix_essai = int(input("Quel est le prix entre 1 et 1000 ? "))
+    essai += 1
+
+    if prix_essai > juste_prix:
         print("Plus petit")
-    else:
-        print("Bien joué")
+    if prix_essai < juste_prix:
+        print("Plus grand")
+    if prix_essai == juste_prix:
+        print("Bien joué !")
+        print("Tu as trouvé en", essai, "essais.")
         break
