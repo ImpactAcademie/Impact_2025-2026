@@ -11,6 +11,7 @@ vie = 100
 
 vie += 4
 
+
 print (vie)
 
 if vie > 100:
