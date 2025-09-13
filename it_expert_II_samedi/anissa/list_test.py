@@ -1,3 +1,3 @@
-list1 = [ 10, 49, 37, 28]
+points = ][]
 
-print(list1)
+repponse = 0
