@@ -1,21 +1,20 @@
-# x = input("Quel est votre prénom ? ")
-# print('Bonjour,', x)
+from functools import wraps
 
-vie = 11
-vie -= 1
-print(vie)
+nom = input("Votre prénom: ")
 
-if vie < 10:
-    print("Tu as moins de 10 vies ! (",vie,")")
-elif vie == 10:
-    print("Tu as 10 vies !")
-else:
-    print("Vous avez plus de 10 vies ! (",vie,")")
-x = "*"
-for i in range(5):
-      print(i)
+def deco(function):
+  @wraps(function)
+  def w():
+    print("---------")
+    function()
+    print("---------")
+  return w
 
-while vie > 0:
-    print("Je t'attaque")
-    vie -= 2
-    
+@deco
+def prenom():
+  """docstring"""
+  print("Bienvenue",nom,"!")
+prenom()
+
+print(prenom.__name__)
+print(prenom.__doc__)
