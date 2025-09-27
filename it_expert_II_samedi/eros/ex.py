@@ -13,4 +13,7 @@ def srting(list1):
 
 
 
-srting(list1)
+
+
+
+
