@@ -1,11 +1,20 @@
 import pygame
 
+GRAVITER= -0.8
 
+player_size=(50,50)
 
-pygame.init
+WIDTH,HEIGHT=1000,700
 
+pygame.init()
 
-screen=pygame.display.set_mode((1000,700))
+GROUND_Y=HEIGHT-100
+
+clock=pygame.time.Clock()
+
+screen=pygame.display.set_mode((WIDTH,HEIGHT))
+
+player_y_speed = 0
 
 player_pos=[100,50]
 
@@ -15,9 +24,10 @@ while running:
 
     for event in pygame.event.get():
             
-            if event.type==quit:
+            if event.type==pygame.QUIT:
                   
                   running=False
+
             if event.type==pygame.KEYDOWN:
 
 
@@ -33,14 +43,38 @@ while running:
                 if event.key==pygame.K_LEFT:
                     player_pos[0]-=10
 
-            
-
+    #update section
+    
     screen.fill((255,0,0))
+    player_y_speed-=GRAVITER
 
-    pygame.draw.rect(screen,(255,255,100),[*player_pos,50,50])
+    player_pos[1]+=player_y_speed
+
+    if player_pos[1]+player_size[1]>GROUND_Y :
+        player_pos[1]=GROUND_Y-player_size[1]
+        player_y_speed=0
+
+    pygame.draw.rect(screen,(255,255,100),[*player_pos,player_size[0],player_size[1]])
+
+    pygame.draw.line(screen,(255,255,255),(0,GROUND_Y),(WIDTH,GROUND_Y))
 
     pygame.display.flip()
+    clock.tick(60)
 
 
 
-       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
