@@ -1,13 +1,14 @@
 #   fonction qui dessine la grille et préparation des cases où le joueur pourra jouer (values)
 def draw_grid(values):
+    print("   0       1       2   ")
     for j in range(3):
         for i in range(3):
             if i == 1:
-                print(f"   {values[j][0]}   |   {values[j][1]}   |   {values[j][2]}   ")
+                print(f"{j}  {values[j][0]}   |   {values[j][1]}   |   {values[j][2]}   ")
             else:
                 print("       |       |       ")
         if j < 2:
-            print("-------+-------+-------")
+            print(" ------+-------+-------")
 values = [[" ", " ", " "],
           [" ", " ", " "],
           [" ", " ", " "]]
@@ -123,4 +124,8 @@ while True:
         if player_symbol == "X":
             player_symbol = "O"
         else:
+<<<<<<< HEAD
             player_symbol = "X"
+=======
+            player_symbol = "X"
+>>>>>>> e7dd578929645c54c5f1738c8d3f30849091e11f
