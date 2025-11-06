@@ -5,6 +5,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 class Calculator(App):
+class  n (App):
     def build(self):
         textinput = TextInput(size_hint=(1, 0.3))
 
