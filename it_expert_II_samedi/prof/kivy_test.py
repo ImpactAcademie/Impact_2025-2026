@@ -1,10 +1,15 @@
 from kivy.app import App
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 
 class BasicApp(App):
     def build(self):
-        return Label(text="Hello World")
-    
+        return Label(text="Bonjour tout le monde !", pos_hint={"center_x":0.1, "center_y":0.8})
 
-app = BasicApp()
+class ImageApp(App):
+    def build(self):
+        return Image(source="avatar.jpg")
+
+
+app = ImageApp()
 app.run()
