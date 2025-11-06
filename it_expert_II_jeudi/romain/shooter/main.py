@@ -18,12 +18,22 @@ class Player:
          self.angle = math.atan2(-y, x)
          self.currentImage = pygame.transform.rotate(self.image, self.angle/math.pi*180)
 
+    def shoot(self, projectiles):
+        projectiles.append(Bullet(self.pos, self.angle))
+
     def move(self, x, y):
         self.pos[0] += x
         self.pos[1] += y 
 
     def draw(self, screen):
         screen.blit(self.currentImage, self.currentImage.get_rect(center=self.pos))
+
+
+class Bullet:
+    def __init__(self, pos, angle):
+        self.pos = pos
+        self.angle = angle
+
 
 
 pygame.init()
