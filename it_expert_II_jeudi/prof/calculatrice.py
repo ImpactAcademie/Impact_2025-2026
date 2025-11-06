@@ -4,7 +4,7 @@ from kivy.uix.image import Image, AsyncImage
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
-class BasicApp(App):
+class  n (App):
     def build(self):
         return Label(text="Au revoir tout le monde", 
                      size_hint=(0.5, 0.5),
