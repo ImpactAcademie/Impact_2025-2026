@@ -12,7 +12,6 @@ BLACK = (0, 0, 0)
 # Une classe GameObject crée avec (x, y, width, height, color) avec
 # méthode draw(screen)
 """Classe de base pour tout objet ayant un rectangle et une couleur"""
-<<<<<<< HEAD
 class Game_object:
     def __init__(self,x,y,width,height,color):
         self.color=color
@@ -22,15 +21,6 @@ class Game_object:
 
         
         
-=======
-class GameObject:
-    def __init__(self, x, y, width, height, color):
-        self.color = color
-        self.rect = pygame.Rect(x, y, width, height)
-    
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
->>>>>>> e7dd578929645c54c5f1738c8d3f30849091e11f
 
 
 # Une classe Paddle qui hérite de GameObject crée avec (x, y) de taille 
