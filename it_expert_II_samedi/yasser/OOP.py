@@ -1,0 +1,40 @@
+class Voiture:
+  nbVoitures=0
+  def __init__(self, marque, couleur):
+    self.couleur = couleur
+    self.marque = marque
+    Voiture.nbVoitures+=1
+  def caracVoiture(self):
+    print(f"Votre {self.marque} est {self.couleur}")
+
+
+v_01 = Voiture("Lambo", "rouge")
+v_01.caracVoiture()
+print(Voiture.nbVoitures)
+class House :
+    def __init__(self,length):
+        self.length=length
+        self.height=10
+        self.nbWindows=length//3
+        self.couleur='white'
+
+    def paint(self,couleur):
+        self.couleur=couleur
+        
+
+class Cabane(House):
+    def __init__(self):
+        super().__init__(5)
+        self.state=['nul','petite']
+
+
+m1=House(15)
+m2=House(169)
+m3=Cabane()
+m1.paint('red')
+
+
+print(m1.nbWindows)
+print(m2.nbWindows)
+print(m3.state)
+print(m1.couleur)
