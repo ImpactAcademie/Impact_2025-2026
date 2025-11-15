@@ -2,18 +2,27 @@ import pygame
 from sys import exit
 import math
 
-class Player:
+class Entity:
+    def __init__(self, pos, angle, speed):
+        self.pos = list(pos)
+        self.angle = angle 
+        self.speed = speed
+
+    def move(self, dt):
+        self.pos[0] += math.cos(self.angle)*dt*self.speed
+        self.pos[1] -= math.sin(self.angle)*dt*self.speed
+
+class Player(Entity):
     def __init__(self):
-        self.pos = [600, 350]
-        self.angle = 0
+        super().__init__([600, 350], 0, 200)
         self.health = 100
         self.maxHealth = 100
         self.name = "Willy Wonka le grand maitre de lhumanité tout puissant"
         self.image = pygame.transform.scale_by(pygame.image.load("player_riffle.png"), 0.5)
         self.currentImage = self.image
-    def move(self, dt):
-        self.pos[0] +- math.cos(self.angle)*dt*50
-        self.pos[1] +- math.cos(self.angle)*dt*50
+
+    def shoot(self, projectiles):
+        projectiles.append(Bullet(self.pos, self.angle))
 
     def look_towards(self, point):
         x = point[0] - self.pos[0]
@@ -23,20 +32,57 @@ class Player:
     def draw(self, surface):
         surface.blit(self.currentImage, self.currentImage.get_rect(center=self.pos))
 
+class Enemy(Player):
+    def __init__(self):
+        super().__init__()
+        self.pos = [1200, 350]
+        self.speed -= 100
+        self.image = pygame.image.load("Characters-Raiden-Shogun.Png")
+class Bullet(Entity):
+     def __init__(self, pos, angle):
+         super().__init__(pos, angle, 800)
+
+     def draw(self, surface):
+         x = self.pos[0] + math.cos(self.angle)*5
+         y = self.pos[1] - math.sin(self.angle)*5
+         pygame.draw.line(surface, (10 , 10, 10), self.pos, (x ,y), 3)
+
 pygame.init()
 screen = pygame.display.set_mode((1200, 700))
 clock = pygame.time.Clock()
 player = Player()
+bullets:list[Bullet] = []
+enemies:list[Enemy] = [Enemy()]
+
 
 while True:
+    dt= clock.tick(60)/1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
         elif event.type == pygame.MOUSEMOTION:
             player.look_towards(pygame.mouse.get_pos())
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                player.shoot(bullets)
+
+    pressed = pygame.key.get_pressed()
+    if pressed[pygame.K_z]:
+        player.move(dt)
+    for bullet in bullets[:]:
+        bullet.move(dt)
+        if (bullet.pos[0] < 0 or 
+            bullet.pos[0] > screen.get_width() or
+            bullet.pos[1] < 0 or
+            bullet.pos[1] > screen.get_height()):
+            bullet.remove(bullet)
 
     screen.fill((175, 130, 72))
+    for bullet in bullets:
+        bullet.draw(screen)
+    player.draw(screen)
+    for enemy in enemies:
+        enemy.draw(screen)
     player.draw(screen)
     pygame.display.update()
-    clock.tick(60)
