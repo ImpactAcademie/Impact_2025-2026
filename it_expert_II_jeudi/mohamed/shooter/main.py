@@ -2,6 +2,7 @@ import pygame
 import math
 from sys import exit
 
+
 class Entity:
     def __init__(self, pos, angle, speed):
         self.pos = list(pos)
@@ -16,9 +17,31 @@ class Entity:
         self.angle = angle
 
 
-class Player(Entity):
+class Enemy(Entity):
+    def __init__(self, pos, speed):
+        super().__init__(pos, 0, speed)
+        self.health = 100
+        self.maxHealth = 100
+        self.image = pygame.transform.rotozoom(pygame.image.load("wolf-monster.png"), -90, 0.5)
+        self.currentImage = self.image
+
+    def collide(self, surface):
+        mask1 = pygame.mask.from_surface(surface)
+        mask2 = pygame.mask.from_surface(self.currentImage)
+        mask1.overlap_mask(mask2, (0, 0))
+
+    def look_towards(self, point):
+        x = point[0]-self.pos[0]
+        y = point[1]-self.pos[1]
+        self.set_angle(math.atan2(-y, x))
+        self.currentImage = pygame.transform.rotate(self.image, self.angle/math.pi*180)   
+
+    def draw(self, screen):
+     screen.blit(self.currentImage, self.currentImage.get_rect(center=self.pos))
+
+class Player(Enemy):
     def __init__(self):
-        super().__init__([600, 350], 0, 200)
+        super().__init__([700, 400], 250)
         self.health = 100
         self.maxHealth = 100
         self.image = pygame.transform.rotozoom(pygame.image.load("player_gun.png"), 0, 0.5)
@@ -26,7 +49,7 @@ class Player(Entity):
 
     def look_towards(self, point):
         x = point[0]-self.pos[0]
-        y = point[0]-self.pos[1]
+        y = point[1]-self.pos[1]
         self.set_angle(math.atan2(-y, x))
         self.currentImage = pygame.transform.rotate(self.image, self.angle/math.pi*180)
 
@@ -41,18 +64,26 @@ class Player(Entity):
 
 class Bullet(Entity):
     def __init__(self, pos, angle):
-        super().__init__(pos, angle, 1000)
+        super().__init__(pos, angle, 800)
+
+    def get_surface(self):
+        y = math.sin(-self.angle)*8
+        x = math.cos(self.angle)*8
+        surface = pygame.Surface((x, y), pygame.SRCALPHA)
+        pygame.draw.line(surface, (255, 0, 0), (0, 0), (x, y), 3)
+        return surface
 
     def draw(self, screen):
-        x = math.cos(self.angle)*5+self.pos[0]
-        y = math.cos(self.angle)*5+self.pos[1]
-        pygame.draw.line(screen, (255, 0, 0), self.pos, (x, y), 3)
+        surface = self.get_surface()
+        screen.blit(surface, surface.get_rect(center=self.pos))
+
 
 pygame.init()
 screen = pygame.display.set_mode((1200, 700))
 clock = pygame.time.Clock()
 player = Player()
 projectiles = []
+enemy = Enemy ((1200, 400), 100)
 
 while True:
     dt =clock.tick(120)/1000
@@ -78,10 +109,17 @@ while True:
         player.move(dt, angle=player.angle+math.pi/2)
         player.look_towards(pygame.mouse.get_pos())
     if pressed[pygame.K_d]:
+        enemy.look_towards(player.pos)
+        enemy.move(dt)
         player.move(dt, angle=player.angle+math.pi/2)
         player.look_towards(pygame.mouse.get_pos())
     for projectile in projectiles:
         projectile.move(dt)
+
+    for projectile in projectiles:
+        if enemy.collide(projectile.get_surface()):
+            enemy.health -= 50
+            projectiles.remove(projectile)
 
     for projectile in projectiles[:]:
         if projectile.pos[0] < 0 or projectile.pos[0] > screen.get_width():
@@ -93,4 +131,5 @@ while True:
     for projectile in projectiles:
         projectile.draw(screen)
     player.draw(screen)
+    enemy.draw(screen)
     pygame.display.update()
