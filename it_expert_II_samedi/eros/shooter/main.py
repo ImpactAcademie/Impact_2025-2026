@@ -39,7 +39,7 @@ class Player(Entity):
         self.health= 100
         self.name='gon'
         self.max_health = 100
-        self.image = pygame.transform.scale_by(pygame.image.load('player_gun.png'),0.5)
+        self.image = pygame.transform.scale_by(pygame.image.load("player_gun.png"),0.5)
         self.current_image= self.image
     def shoot(self,projectils):
         projectils.append(Bullet(self.pos,self.angle))
@@ -56,7 +56,7 @@ class Evemy(Player):
 
         self.pos=[1200,350]
         self.speed-=100
-        self.imag=pygmame.transfor.scale_by(pygame.image.load('monster.png'),1)
+        self.imag=pygame.transfor.scale_by(pygame.image.load('monstre.png'),1)
          
 
     def look_towards(self,point):
