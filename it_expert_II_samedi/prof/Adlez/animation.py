@@ -8,7 +8,7 @@ class Animation:
         self.fps = fps
         self.start_time = None
         self.current = 0
-        self.images = [pygame.image.load(path+str(i)+".png") for i in range(nb)]
+        self.images = [pygame.image.load("assets/images/"+path+str(i)+".png") for i in range(nb)]
 
     def start(self):
         self.start_time = time()
@@ -22,7 +22,7 @@ class Animation:
     def update(self):
         if self.start_time == None:
             return
-        self.current = int((time()-self.start_time)/self.fps)%self.nb
+        self.current = int((time()-self.start_time)*self.fps)%self.nb
     
     def draw(self, screen, pos):
-        screen.blit(self.images[self.current], pos)
+        screen.blit(self.images[self.current], self.images[self.current].get_rect(center=pos))
